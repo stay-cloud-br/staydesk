@@ -50,6 +50,67 @@ Ainda assim, o fork atual **não atende integralmente os requisitos eliminatóri
 6. **Não existe importador Zendesk nativo.** O framework de importação pode ser estendido, mas a migração completa, o mapa de IDs e a reconciliação precisam ser construídos.
 7. **A decisão MIT versus Enterprise precisa ocorrer antes do delivery dependente dessas features.** SLA, audit logs, custom roles, atributos obrigatórios, advanced assignment, Captain e busca semântica estão marcados como premium.
 
+## Escopo funcional — criar, ajustar e configurar
+
+### Capacidades a criar praticamente do zero
+
+| Bloco | O que precisa ser construído | Prioridade |
+|---|---|---|
+| Framework de aplicativos | Evoluir o Dashboard App, hoje centrado em iframe e contexto limitado, para oferecer escrita segura no ticket, autenticação assinada, permissões, múltiplos pontos de extensão, versionamento, rollback, sandbox e logs. A `DEC-002` deve decidir entre um framework genérico e um módulo first-party do StayDesk. | P0 · eliminatório |
+| Natureza do ticket | Criar `humano`, `automático`, `interno` e `resolvido pelo bot` como atributo estrutural, com efeito consistente sobre fila, SLA, indicadores e integrações. | P0 · eliminatório |
+| Governança de automações | Implementar dry-run, histórico por execução, before/after, ordem explícita, identificação de conflitos/loops e uma interface compreensível pela operação. | P0 · eliminatório |
+| Calendário operacional único | Criar grade semanal, feriados e exceções compartilhadas entre SLA, bot e plantão, com histórico/versionamento. | P0 |
+| Camada analítica | Calcular mediana, p90/p95, FCR, reaberturas e segmentações por marca, natureza, produto, servidor e classificação, expondo resultados ao BI. | P0 |
+| Migração Zendesk | Construir importador de tickets, mensagens, notas, anexos, campos, avaliações e timestamps, com mapa de IDs, sincronização incremental, reconciliação e rollback. | P0 · eliminatório |
+
+### Capacidades existentes que precisam de ajuste ou ampliação
+
+| Capacidade | Base reutilizável | Ajuste necessário |
+|---|---|---|
+| SLA | Políticas, applied SLA, thresholds, vencimentos e eventos no Enterprise | Histórico de pausas, estado `em risco`, calendário excepcional, exclusão por natureza e snapshot imutável da meta aplicada |
+| Multimarca | Inboxes, portais e identidades configuráveis | Marca como dimensão consistente de filas, permissões, SLA, relatórios e integrações |
+| Identidade do cliente | Contatos, identificadores e merge | Resolver Chatwoot, WHMCS e sistema interno para uma identidade única, incluindo confirmação e aprendizado de telefone novo |
+| Tickets e campos | Conversas, custom attributes, notas, anexos e menções | Equivalência para estados `novo`/`fechado`, validação condicional dos 27 campos e contagem confiável de reaberturas |
+| Tags | Labels normalizadas e únicas | Sinônimos, governança administrativa e migração de tags que representam servidor/departamento para campos estruturados |
+| Macros | Texto, notas, status, prioridade, tags, anexos e webhook | Escopo por grupo, alteração de custom fields, dados dinâmicos do WHMCS, versionamento e métrica de uso |
+| Roteamento | Times, inboxes, automações, prioridade e autoatribuição | Condições por marca, natureza, horário, classificação do cliente e competência técnica |
+| Bot | Agent Bot, webhook, eventos e handoff | Integrar o bot do Matheus, preservar contexto/transcrição, validar fail-open, versionar sessões e medir deflexão por caminho |
+| API e webhooks | REST, OpenAPI, rate limit, HMAC e delivery ID | Cobertura equivalente à operação, tokens com escopos, allowlist de IP, retry, log de entrega e eventos de SLA/CSAT |
+| Administração e segurança | MFA individual, exportação/exclusão de contato, custom roles e audit logs premium | 2FA obrigatório, reset administrativo, retenção LGPD, mascaramento de logs e trilha ampliada |
+| Conhecimento, CSAT e QA | Portal, artigos, busca, CSAT e transcrições | Versionamento editorial, base interna com permissões, CSAT no canal, alerta negativo e integração com o QA existente |
+
+### Capacidades predominantemente configuráveis
+
+- WhatsApp, chat do site, e-mail e API como canais de entrada.
+- Inboxes, times e permissões básicas de acesso.
+- Atribuição manual e automática.
+- Prioridade e disponibilidade dos agentes.
+- Notas internas, anexos e menções.
+- Respostas prontas e macros básicas.
+- Automações básicas no modelo evento → condição → ação.
+- Portal público, categorias e artigos.
+- CSAT básico.
+- REST API, OpenAPI e webhooks básicos.
+- Agent Bots e transferência para humanos.
+- Relatórios básicos e exportações CSV/JSON.
+
+### Impacto da decisão Enterprise
+
+Com licença Enterprise, o StayDesk pode reutilizar a base existente de SLA, custom roles, audit logs, atributos obrigatórios, advanced assignment, Captain e busca semântica. Isso reduz o volume de código próprio, mas **não elimina** os seis blocos classificados acima como construção substancial.
+
+Na opção MIT-only, além desses seis blocos, será necessário implementar alternativas independentes para SLA, papéis, auditoria e demais recursos premium, sem copiar código do overlay proprietário. Portanto, a opção MIT-only aumenta significativamente o esforço de construção, testes e manutenção contra o upstream.
+
+### Ordem funcional recomendada
+
+1. Executar o PoC do aplicativo real do Matheus dentro do Chatwoot.
+2. Modelar e validar a natureza do ticket de ponta a ponta.
+3. Executar o PoC do SLA completo na API e nos webhooks.
+4. Integrar o bot em web e WhatsApp, com handoff e fail-open.
+5. Provar dry-run e log auditável de automações.
+6. Executar o spike do importador Zendesk.
+7. Decidir Enterprise versus MIT próprio com base nos PoCs.
+8. Decompor os gaps aprovados em stories de implementação.
+
 ## Matriz preliminar por domínio
 
 > Esta visão é deliberadamente conservadora. “Parcial” não significa pronto para produção; significa apenas que há fundação reutilizável.
