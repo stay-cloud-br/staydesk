@@ -1,11 +1,14 @@
 # StayDesk — Gap Analysis: Zendesk → Chatwoot
 
-> Status: Draft v1 (aguardando input do Naldo) · 2026-08-28 · @analyst + @product-lead
+> Status: Diagnóstico preliminar preservado para histórico · 2026-09-03 · @analyst + @product-lead
+> Baseline atual: [Estudo de Cobertura dos Requisitos](requirements-coverage-study.md), baseado no levantamento v1.7 do Matheus.
+
+> **Supersedido:** não usar os verdictos agregados abaixo para decisão de conformidade, licenciamento ou adoção. Eles permanecem apenas como registro da descoberta inicial.
 
 ## Metodologia
 
 3 colunas de veredito: **✅ Já tem** (Chatwoot MIT) · **🔶 Tem mas é pago/fraco** (enterprise ou precisa melhorar) · **❌ Criar do zero**.
-A coluna "Naldo usa?" será preenchida com o questionário abaixo — **nada entra no backlog sem essa validação**.
+A coluna "Naldo usa?" permanece útil para validar a operação e obter exports reais, mas deixou de ser o baseline de requisitos. Itens só entram em delivery após rastreabilidade e evidência no estudo atual.
 
 ## Matriz preliminar (baseada no código v4.17.1)
 
@@ -58,5 +61,5 @@ A coluna "Naldo usa?" será preenchida com o questionário abaixo — **nada ent
 
 ## Handoff
 
-- Respostas do Naldo → @product-lead preenche coluna "Naldo usa?" → matriz vira **backlog priorizado** em `epics/`
+- Respostas e exports do Naldo → @product-lead valida os 12 processos críticos e complementa a matriz atômica em `requirements-coverage-study.md`
 - Itens 🔶 alimentam a **decisão de licenciamento** (architecture-map § Licenciamento)

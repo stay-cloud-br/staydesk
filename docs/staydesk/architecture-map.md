@@ -1,6 +1,6 @@
 # StayDesk — Mapa de Arquitetura (Chatwoot v4.17.1)
 
-> Status: v1 · 2026-08-28 · FABLE CTO · Base: auditoria direta do código do fork
+> Status: v2 · 2026-09-03 · FABLE CTO · Base: auditoria direta do código do fork
 
 ## Stack
 
@@ -45,7 +45,7 @@ O repo contém **duas licenças**:
 
 `sla` · `captain_integration` (IA) · `advanced_search` · `custom_roles` · `saml` · `companies` · `channel_voice` · `audit_logs` · `disable_branding` · `csat_review_notes` · `advanced_assignment` · `conversation_required_attributes` · `custom_tools` · `help_center_embedding_search`
 
-### Opções (decidir no gate 3)
+### Opções (decidir na story 2.3 / Gate 2 do estudo)
 
 | Opção | Prós | Contras |
 |---|---|---|
@@ -53,13 +53,13 @@ O repo contém **duas licenças**:
 | B. Licenciar Chatwoot (paid self-hosted) | Tudo liberado, suporte | Custo recorrente (avaliar vs Zendesk) |
 | C. Construir o que faltar por fora do `enterprise/` | Controle total | Esforço dev; não copiar código enterprise (violação) |
 
-**Recomendação preliminar CTO:** validar com o Naldo o que o CS *realmente* usa. Se SLA formal for indispensável → comparar custo B vs esforço C. `disable_branding` (white-label) provavelmente importa pro StayDesk → pesa a favor de B ou C.
+**Recomendação atualizada:** o levantamento v1.7 torna SLA/API um requisito eliminatório. Executar o PoC técnico e comparar o custo da opção B com o esforço e a manutenção da opção C antes de iniciar delivery dependente do Enterprise. `disable_branding` também pesa a favor de B ou C.
 
 ### ✅ Decisão 2026-08-28 (Luiz) — ADR-001
 
 - **Fase de avaliação (local):** usar TODAS as features, incluindo enterprise. Legal: a Enterprise License permite explicitamente uso em *development and testing* sem assinatura.
 - **Como foi ativado localmente:** `InstallationConfig` → `INSTALLATION_PRICING_PLAN=enterprise`, `INSTALLATION_PRICING_PLAN_QUANTITY=100` + premium flags habilitadas na conta (via rails runner). Só vale pro ambiente local.
-- **Gate pendente (bloqueia produção):** antes do go-live (story 6.4), decidir **pagar licença** ou **remover/substituir** as features enterprise. Produção sem licença = violação — não é opção.
+- **Gate pendente:** após os PoCs eliminatórios (story 2.5) e antes de qualquer delivery dependente, decidir **pagar licença** ou **remover/substituir** as features Enterprise. A story 6.4 confirma essa decisão no go-live. Produção sem licença = violação — não é opção.
 
 ## Modelo de fork (anti-drift)
 

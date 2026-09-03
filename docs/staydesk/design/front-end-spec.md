@@ -86,10 +86,10 @@
 | **3.3** | Shell: densidade da sidebar, colapso default, logo StayDesk | Luiz | 🟡 Médio |
 | **3.4** | Lista de conversas: hierarquia, badges, densidade | Luiz | 🟡 Médio |
 | **3.5** | Conversa + composer: proporção, bolhas, ações rápidas | Luiz + dev | 🟠 Alto |
-| **3.6** | Context panel com abas (prepara EPIC-004) | dev | 🟠 Alto |
+| **3.6** | Context panel com abas (prepara EPIC-004; depende da `DEC-002`) | dev | 🟠 Alto |
 | **3.7** | Widget rebrand | dev | 🟢 Baixo |
 | **3.8** | Help Center / portal rebrand | dev | 🟢 Baixo |
-| **3.9** | Login / onboarding com identidade StayDesk | dev | 🟡 Médio |
+| **3.9** | Login / onboarding com identidade StayDesk (depende da `DEC-001`) | dev | 🟡 Médio |
 
 **Ordem inegociável:** 3.1a antes de qualquer customização visual. O ganho global exige atualizar os dois contratos de cor: `woot` para superfícies legadas e `n.*`/variáveis CSS para `components-next/`. Trocar apenas a escala `woot` deixa o Next com a marca anterior.
 

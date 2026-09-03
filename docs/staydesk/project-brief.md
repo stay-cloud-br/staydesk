@@ -1,16 +1,16 @@
 # StayDesk — Project Brief
 
-> Status: Draft v1 · 2026-08-28 · Autor: FABLE CTO (orquestração SINAPSE)
+> Status: Draft v2 · 2026-09-03 · Autor: FABLE CTO (orquestração SINAPSE)
 
 ## Visão
 
-StayDesk é o helpdesk da StayCloud, construído como **fork do Chatwoot v4.17.1** ([stay-cloud-br/staydesk](https://github.com/stay-cloud-br/staydesk)). Objetivo: **substituir o Zendesk** com uma ferramenta self-hosted, customizável e sem custo por agente, evoluindo o frontend para o padrão visual StayCloud.
+StayDesk é o helpdesk da StayCloud, construído como **fork do Chatwoot v4.17.1** ([stay-cloud-br/staydesk](https://github.com/stay-cloud-br/staydesk)). Objetivo: **substituir o Zendesk** com uma ferramenta self-hosted, customizável e com custo previsível, desacoplado do volume de tickets automáticos, evoluindo o frontend para o padrão visual StayCloud.
 
 ## Por que sair do Zendesk
 
 | Driver | Detalhe |
 |---|---|
-| Custo | Zendesk cobra por agente (~$55+/agente/mês); Chatwoot self-hosted é grátis (MIT) |
+| Custo | A base Chatwoot self-hosted é MIT; o custo-alvo depende da decisão de licenciar ou substituir as capacidades Enterprise exigidas |
 | Controle | Dados de clientes na nossa infra (LGPD, soberania) |
 | Customização | Frontend Vue 3 próprio — podemos moldar a UX ao fluxo do CS da StayCloud |
 | Integração | API aberta → integração futura com painel StayCloud, checkout, billing |
@@ -21,12 +21,14 @@ StayDesk é o helpdesk da StayCloud, construído como **fork do Chatwoot v4.17.1
 |---|---|
 | **Luiz** | Frontend — redesign visual, UX, design system StayDesk |
 | **Devs** | Backend, infra, integrações, features novas |
-| **Naldo** (Coord. CS) | Dono dos requisitos — configurou o Zendesk atual, valida paridade funcional |
+| **Matheus** | Autor/origem do levantamento v1.7 e entregador dos ativos técnicos existentes |
+| **Product** | Custodiante da matriz de requisitos, decisões e rastreabilidade do backlog |
+| **Naldo** (Coord. CS) | Aprovador operacional — fornece exports do Zendesk e valida os 12 processos e a paridade funcional |
 
 ## Escopo (IN)
 
 1. Rodar Chatwoot local (Docker) → ambiente de avaliação
-2. Gap analysis: Zendesk (uso real do Naldo) vs Chatwoot OSS
+2. Estudo de cobertura: requisitos v1.7 do Matheus vs Chatwoot OSS/Enterprise
 3. Ambiente de dev frontend (Vite + Vue 3) pro Luiz
 4. Roadmap de melhorias de frontend + features CS
 5. Migração progressiva do Zendesk (dados e operação) — fase posterior
@@ -35,19 +37,21 @@ StayDesk é o helpdesk da StayCloud, construído como **fork do Chatwoot v4.17.1
 
 - Deploy em produção (depende do gate de validação do Naldo)
 - Uso de features **enterprise** do Chatwoot sem decisão de licenciamento (ver `architecture-map.md` § Licenciamento)
-- Migração de histórico do Zendesk (avaliar na fase 2)
+- Execução da migração de histórico do Zendesk (obrigatória, mas posterior aos PoCs eliminatórios)
 
 ## Riscos principais
 
 | Risco | Severidade | Mitigação |
 |---|---|---|
-| SLA/relatórios avançados são código enterprise (não-MIT) | **Alta** | Decidir: licenciar Chatwoot vs construir features próprias vs validar se CS precisa mesmo |
+| SLA/relatórios avançados são código Enterprise (não-MIT) | **Alta** | Provar o contrato obrigatório e decidir entre licenciar ou construir capacidades próprias |
 | Divergência do upstream (fork drift) | Média | Manter `upstream` remote, rebase periódico, customizações isoladas |
-| Requisitos do Naldo ainda não formalizados | Alta | Questionário estruturado em `gap-analysis-zendesk.md` — **primeira ação** |
+| Requisitos formalizados, mas ainda sem rastreabilidade atômica | Alta | Baseline em `requirements-coverage-study.md`; atomizar 115 RFs + 10 RNFs e validar com Matheus/Naldo |
+| Framework atual de Dashboard Apps abaixo do RF-8 | **Alta** | Executar PoC eliminatório com o app real antes do delivery amplo |
 
 ## Próximos gates
 
 1. ✅ Fork + ambiente local no ar
-2. ⬜ Naldo responde questionário → gap analysis vira matriz validada
-3. ⬜ Decisão de licenciamento enterprise (CTO + Luiz)
-4. ⬜ Backlog priorizado → sprints
+2. ✅ Levantamento v1.7 do Matheus incorporado como baseline
+3. 🔄 Matriz de cobertura atômica + PoCs eliminatórios
+4. ⬜ Decisão de licenciamento Enterprise versus implementação própria
+5. ⬜ Backlog rastreável priorizado → sprints

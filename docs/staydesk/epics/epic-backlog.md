@@ -17,10 +17,12 @@
 
 | # | Story | Dono | Status |
 |---|---|---|---|
-| 2.1 | Naldo responde questionário (`gap-analysis-zendesk.md`) | Naldo | ⬜ **bloqueador do resto** |
-| 2.2 | Matriz de gap validada + priorizada (MoSCoW) | product | ⬜ |
-| 2.3 | Decisão de licenciamento enterprise (MIT-only vs pagar vs construir) | CTO + Luiz | 🔶 **Parcial** — decisão 28/08: avaliação local usa TUDO (dev/teste é permitido pela licença sem pagar). Decisão pagar-vs-construir adiada pro gate de go-live (6.4) |
+| 2.1 | Incorporar levantamento v1.7 do Matheus como baseline; Naldo valida processos e fornece exports | Product + Naldo | ✅ Baseline incorporada; validação operacional pendente |
+| 2.2 | Matriz atômica requisito → capacidade → gap → ação → evidência → story | Product + Arquitetura | 🔄 [Estudo iniciado](../requirements-coverage-study.md) |
+| 2.3 | Decisão de licenciamento Enterprise (MIT-only vs pagar vs construir) | CTO + Luiz | 🔶 **Parcial** — avaliação local pode usar tudo; decisão pagar-vs-construir ocorre após 2.5 e antes do delivery dependente. Story 6.4 confirma no go-live |
 | 2.4 | Auditoria de automações/triggers do Zendesk atual (export) | Naldo + analyst | ⬜ |
+| 2.5 | PoCs eliminatórios: app real, SLA/API, bot web+WhatsApp, automações e natureza do ticket | Arquitetura + QA | ⬜ **bloqueia decisão de adoção** |
+| 2.6 | Spike de migração: limites Zendesk, anexos, timestamps, IDs e sincronização incremental | Backend + QA | ⬜ **bloqueia decisão de adoção** |
 
 ## EPIC-003 — Frontend StayDesk (P1 — trilha do Luiz)
 
@@ -32,28 +34,30 @@
 | 3.3 | Redesign do shell do dashboard (sidebar, header, account switcher) | Maior impacto estrutural diário |
 | 3.4 | Redesign da lista de conversas (hierarquia, badges, densidade) | Preserva a fila como superfície operacional |
 | 3.5 | Redesign da conversa + composer (proporção, bolhas, ações rápidas) | Região dominante da experiência do agente |
-| 3.6 | Context panel com abas Cliente/StayCloud/Notas | Prepara EPIC-004 sem adicionar uma quinta coluna |
+| 3.6 | Context panel com abas Cliente/StayCloud/Notas | Prepara EPIC-004; implementação depende da `DEC-002` |
 | 3.7 | Rebrand do widget de chat (cara StayCloud nos sites) | Visível pro cliente final |
 | 3.8 | Rebrand do Help Center/portal | |
-| 3.9 | Login/onboarding com identidade StayDesk | Ver flag `disable_branding` (premium) — decisão 2.3 |
+| 3.9 | Login/onboarding com identidade StayDesk | Depende da `DEC-001`; ver flag `disable_branding` (premium) |
 
 ## EPIC-004 — Integração StayCloud (P1/P2 — diferencial vs Zendesk)
 
 | # | Story | Notas |
 |---|---|---|
-| 4.1 | Sidebar de contexto do cliente no ticket (plano, servidores, status, faturas via API do painel) | Chatwoot suporta Dashboard Apps (iframe) — caminho rápido |
+| 4.1 | Sidebar de contexto do cliente no ticket (plano, servidores, status, faturas via API do painel) | Dashboard Apps é hipótese condicionada ao PoC 2.5 e à `DEC-002` |
 | 4.2 | Identificação automática do contato (e-mail ↔ conta StayCloud) | |
 | 4.3 | Ações rápidas no ticket (ex.: link mágico de login, reiniciar serviço) | Requer API painel + permissões |
 | 4.4 | Webhooks StayCloud → conversa (alerta de servidor, suspensão, churn risk) | |
 
-## EPIC-005 — Migração Zendesk (P2 — só após gate 2.2)
+## EPIC-005 — Migração Zendesk (P2 — após stories 2.5, 2.6 e 2.3)
 
 | # | Story | Notas |
 |---|---|---|
-| 5.1 | Importador de contatos/organizações (API Zendesk → API Chatwoot) | |
-| 5.2 | Importar artigos da Central de Ajuda | |
-| 5.3 | Estratégia de cutover (rodar em paralelo, redirecionar canais, congelar Zendesk) | |
-| 5.4 | Importar histórico de tickets (avaliar custo/benefício — talvez só arquivo consultável) | |
+| 5.1 | Inventário e mapeamento Zendesk → StayDesk (campos, tags, agentes, marcas e IDs) | Derivado do spike 2.6 |
+| 5.2 | Importador de contatos/organizações e artigos da Central de Ajuda | API Zendesk → framework de importação Chatwoot |
+| 5.3 | Importador do histórico completo: tickets, notas, anexos, campos, timestamps e avaliações | Preservar IDs ou mapa de-para |
+| 5.4 | Carga incremental e operação em paralelo por canal | Manter sincronizações externas durante a transição |
+| 5.5 | Reconciliação por contagem, checksums e amostragem funcional | Critério: zero perda |
+| 5.6 | Ensaio completo, plano de rollback e cutover progressivo | Zendesk passa a somente leitura apenas após o gate |
 
 ## EPIC-006 — Produção (P3)
 
@@ -62,12 +66,14 @@
 | 6.1 | Deploy em VPS StayCloud (compose hardened, backups PG, SSL) | |
 | 6.2 | E-mail transacional (SMTP) + inbound email | |
 | 6.3 | Monitoramento + alertas | |
-| 6.4 | Gate de go-live com Naldo (checklist de paridade) | **Inclui decisão obrigatória de licença enterprise: pagar ou remover/substituir features enterprise antes de produção** |
+| 6.4 | Gate de go-live e estabilização com Naldo | Confirmar licença Enterprise ou substituições antes de produção; encerrar licenças Zendesk somente após 30 dias sem regressão de SLA, CSAT e FCR, com evidência no Evidence Register |
 
 ## Sequência crítica
 
 ```
-1.2 ──▶ 1.3 ──▶ 2.1 ──▶ 2.2 ──▶ 2.3 ─┬─▶ EPIC-003 (Luiz, paralelo)
-                                      ├─▶ EPIC-004 (devs)
-                                      └─▶ EPIC-005 ──▶ EPIC-006
+                                  ┌──▶ 2.5 ──┐
+1.2 ──▶ 1.3 ──▶ 2.1 ──▶ 2.2 ────┤          ├──▶ 2.3 ─┬─▶ EPIC-004 (devs)
+                                  └──▶ 2.6 ──┘         └─▶ EPIC-005 ──▶ EPIC-006
+
+1.4 ──▶ EPIC-003 (Luiz, em paralelo; não substitui os gates de viabilidade funcional)
 ```
