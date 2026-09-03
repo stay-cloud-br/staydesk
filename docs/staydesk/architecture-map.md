@@ -20,12 +20,19 @@
 | `dashboard/components-next/` | **Design refresh em andamento pelo upstream** — componentes novos (Conversation, Inbox, Contacts, Settings...) | ⭐⭐ Construir em cima disso, não do legado |
 | `dashboard/components/` | Componentes legados | Evitar investir aqui |
 | `design-system/` | Tokens/estilos base + Histoire | Ponto de entrada pro design system StayDesk |
+| `dashboard/assets/scss/_next-colors.scss` | Variáveis CSS de cores e superfícies do design system Next (`--slate-*`, `--iris-*`, `--blue-*`) | Fonte de runtime das classes `n.*` em `components-next/` |
 | `widget/` | Chat widget embedado nos sites dos clientes | Rebrand fase 2 |
 | `portal/` | Help Center público | Rebrand fase 2 |
 | `v3/`, `survey/`, `superadmin_pages/` | Superfícies auxiliares | Baixa prioridade |
 | `tailwind.config.js` (raiz) | Config Tailwind | Customizar tokens de marca aqui |
 
-**Implicação estratégica:** o upstream está no meio de um redesign (`components-next`). O redesign StayDesk deve (a) usar os componentes-next como base, (b) concentrar identidade visual em tokens Tailwind + design-system, minimizando conflito de merge com upstream.
+**Implicação estratégica:** o upstream está no meio de um redesign (`components-next`). O redesign StayDesk deve (a) usar os componentes-next como base e (b) concentrar identidade visual em tokens Tailwind + design-system, minimizando conflito de merge com upstream.
+
+### Arquitetura de cores: legado vs Next
+
+- A escala `colors.woot` em `theme/colors.js` atende superfícies legadas. Alterá-la não rebranda, sozinha, os componentes Next.
+- `components-next/` consome principalmente classes `n.*` definidas em `theme/colors.js`; várias delas apontam para variáveis CSS mantidas em `app/javascript/dashboard/assets/scss/_next-colors.scss`.
+- Uma mudança global de marca precisa atualizar os dois contratos de compatibilidade: `woot` para o legado e `n.*`/variáveis CSS para o Next. Os aliases e redirects de tema devem seguir a taxonomia em [Design Tokens](design/staydesk-tokens.md).
 
 ## ⚠️ Licenciamento — decisão obrigatória
 

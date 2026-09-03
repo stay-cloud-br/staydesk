@@ -26,12 +26,16 @@
 
 | # | Story | Notas |
 |---|---|---|
-| 3.1 | Design tokens StayCloud no `tailwind.config.js` + `design-system/` (cores, tipografia, radius) | Base de tudo; merge barato com upstream |
-| 3.2 | Explorar `components-next/` no Histoire e mapear superfícies do redesign | Upstream já está migrando — surfar essa onda |
-| 3.3 | Redesign do shell do dashboard (sidebar, header, conversa) | Maior impacto visual diário |
-| 3.4 | Rebrand do widget de chat (cara StayCloud nos sites) | Visível pro cliente final |
-| 3.5 | Rebrand do Help Center/portal | |
-| 3.6 | Login/onboarding com identidade StayDesk | Ver flag `disable_branding` (premium) — decisão 2.3 |
+| 3.1a | Mapear design tokens StayDesk nos contratos `woot` (legado) e `n.*`/variáveis CSS (Next) + Geist self-hosted | Base de tudo; cobre `theme/colors.js`, `_next-colors.scss` e `tailwind.config.js` |
+| 3.1b | Validar tokens light/dark no Histoire e calibrar escala, aliases e contraste | Depende de 1.4; valida 3.1a antes do redesign estrutural |
+| 3.2 | Explorar `components-next/` no Histoire e mapear cobertura das superfícies do redesign | Upstream já está migrando — surfar essa onda |
+| 3.3 | Redesign do shell do dashboard (sidebar, header, account switcher) | Maior impacto estrutural diário |
+| 3.4 | Redesign da lista de conversas (hierarquia, badges, densidade) | Preserva a fila como superfície operacional |
+| 3.5 | Redesign da conversa + composer (proporção, bolhas, ações rápidas) | Região dominante da experiência do agente |
+| 3.6 | Context panel com abas Cliente/StayCloud/Notas | Prepara EPIC-004 sem adicionar uma quinta coluna |
+| 3.7 | Rebrand do widget de chat (cara StayCloud nos sites) | Visível pro cliente final |
+| 3.8 | Rebrand do Help Center/portal | |
+| 3.9 | Login/onboarding com identidade StayDesk | Ver flag `disable_branding` (premium) — decisão 2.3 |
 
 ## EPIC-004 — Integração StayCloud (P1/P2 — diferencial vs Zendesk)
 

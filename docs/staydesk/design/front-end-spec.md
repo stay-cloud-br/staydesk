@@ -48,7 +48,7 @@
 
 | # | Superfície | Base técnica | Prioridade |
 |---|---|---|---|
-| S1 | **Tokens globais** (cor, tipo, raio, sombra) | `theme/colors.js` + `tailwind.config.js` | 🔴 P0 — destrava tudo |
+| S1 | **Tokens globais** (cor, tipo, raio, sombra) | `theme/colors.js` + `_next-colors.scss` + `tailwind.config.js` | 🔴 P0 — destrava tudo |
 | S2 | **Shell**: sidebar + header + account switcher | `components-next/sidebar/*` (já existe, moderno) | 🔴 P0 |
 | S3 | **Lista de conversas** (a "fila") | `components-next/Conversation/ConversationCard` | 🟠 P1 |
 | S4 | **Conversa + composer** | `components-next/Conversation` + `Editor` | 🟠 P1 |
@@ -56,8 +56,9 @@
 | S6 | **Settings** | `components-next/Settings` | 🟡 P2 |
 | S7 | **Widget** (o que o cliente final vê) | `app/javascript/widget` | 🟢 P3 |
 | S8 | **Help Center / portal** | `app/javascript/portal` | 🟢 P3 |
+| S9 | **Login / onboarding** | `app/javascript/v3` + superfícies de autenticação | 🟢 P3 |
 
-**Regra de ouro técnica:** só construir sobre `components-next/`. O `components/` legado está sendo deprecado pelo upstream — investir lá é dívida garantida no próximo sync.
+**Regra de ouro técnica:** no dashboard, construir sobre `components-next/` sempre que houver base equivalente. O `components/` legado está sendo deprecado pelo upstream — investir lá é dívida garantida no próximo sync. Widget, portal e autenticação seguem suas árvores próprias.
 
 ---
 
@@ -79,19 +80,22 @@
 
 | Story | Escopo | Dono | Risco de merge c/ upstream |
 |---|---|---|---|
-| **3.1a** | Escala `woot` → indigo StayDesk + Geist em `theme/colors.js` e `tailwind.config.js` | Luiz | 🟢 Baixo (2 arquivos) |
-| **3.1b** | Calibração visual no Histoire; ajuste fino dos steps | Luiz | 🟢 Nulo |
-| **3.2** | Shell: densidade da sidebar, colapso default, logo StayDesk | Luiz | 🟡 Médio |
-| **3.3** | Lista de conversas: hierarquia, badges, densidade | Luiz | 🟡 Médio |
-| **3.4** | Conversa + composer: proporção, bolhas, ações rápidas | Luiz + dev | 🟠 Alto |
-| **3.5** | Context panel com abas (prepara EPIC-004) | dev | 🟠 Alto |
-| **3.6** | Widget rebrand | dev | 🟢 Baixo |
+| **3.1a** | Mapear tokens StayDesk em `woot` (legado) e `n.*`/variáveis CSS (Next) + Geist self-hosted | Luiz | 🟡 Médio |
+| **3.1b** | Calibração visual light/dark no Histoire; ajuste fino de escala, aliases e contraste | Luiz | 🟢 Nulo |
+| **3.2** | Inventariar `components-next/` no Histoire e mapear cobertura das superfícies S2–S6 | Luiz | 🟢 Nulo |
+| **3.3** | Shell: densidade da sidebar, colapso default, logo StayDesk | Luiz | 🟡 Médio |
+| **3.4** | Lista de conversas: hierarquia, badges, densidade | Luiz | 🟡 Médio |
+| **3.5** | Conversa + composer: proporção, bolhas, ações rápidas | Luiz + dev | 🟠 Alto |
+| **3.6** | Context panel com abas (prepara EPIC-004) | dev | 🟠 Alto |
+| **3.7** | Widget rebrand | dev | 🟢 Baixo |
+| **3.8** | Help Center / portal rebrand | dev | 🟢 Baixo |
+| **3.9** | Login / onboarding com identidade StayDesk | dev | 🟡 Médio |
 
-**Ordem inegociável:** 3.1a antes de tudo. Trocar a paleta re-branda o produto inteiro num PR só — é o maior retorno visual por linha de código do projeto.
+**Ordem inegociável:** 3.1a antes de qualquer customização visual. O ganho global exige atualizar os dois contratos de cor: `woot` para superfícies legadas e `n.*`/variáveis CSS para `components-next/`. Trocar apenas a escala `woot` deixa o Next com a marca anterior.
 
 ### Fluxo de trabalho do Luiz (hot-reload)
 
-Depende da story **1.4** (ambiente dev nativo). Sem ela, cada ajuste de CSS exige rebuild de container — inviável pra design. **1.4 é pré-requisito de 3.1b em diante.**
+Depende da story **1.4** (ambiente dev nativo). Sem ela, cada ajuste de CSS exige rebuild de container — inviável pra design. **1.4 é pré-requisito de 3.1b em diante.** A story 3.2 valida a cobertura real do Next antes das customizações estruturais 3.3–3.6.
 
 ---
 
